@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Care Center",
 
@@ -10,9 +9,10 @@
     'website': "http://www.thinkwelldesigns.com",
 
     'category': 'Support',
-    'version': '0.3',
+    'version': '11.0.1.0.0',
 
     'depends': [
+        'base_automation',
         'utm',
         'note',
         'calendar',
@@ -25,10 +25,9 @@
         # 'security/ir.model.access.csv',
         'data/utm.xml',
         'views/fetchmail_server.xml',
-        'views/res_config.xml',
-        'views/project.xml',
+        'views/res_config_settings.xml',
         'views/project_task.xml',
-        'views/base_action_rule.xml',
+        'views/base_automation',
         'views/care_center.xml',
     ],
     'installable': True,

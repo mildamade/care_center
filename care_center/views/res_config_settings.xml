@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form for project (in care_center)</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="project.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]/div[@data-key='project']" position="inside">
+                <h2>Email Settings</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="alias_name_prefix"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="alias_name_prefix"/>
+                            <div class="text-muted">
+                                Prepend catchall email alias as prefix to project alias name. e.g. support+project-name
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="res_config_settings_view_care_center_block" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form for care center (in care_center)</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="55"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="Care Center" string="Care Center" data-key="carecenter" groups="project.group_project_manager"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
