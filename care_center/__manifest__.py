@@ -27,7 +27,7 @@
         'views/fetchmail_server.xml',
         'views/res_config_settings.xml',
         'views/project_task.xml',
-        'views/base_automation',
+        'views/base_automation.xml',
         'views/care_center.xml',
     ],
     'installable': True,
