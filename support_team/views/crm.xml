@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
         <field name="arch" type="xml">
             <field name="user_id" position="after">
-                <field name="type_team"></field>
+                <field name="team_type"></field>
             </field>
         </field>
     </record>

@@ -7,5 +7,5 @@ class ProjectProject(models.Model):
     team_id = fields.Many2one(
         "crm.team",
         string="Project Team",
-        domain=[("type_team", "in", ("support", "project"))],
+        domain=[("team_type", "in", ("support", "project"))],
     )
