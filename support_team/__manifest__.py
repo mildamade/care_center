@@ -16,7 +16,6 @@
     ],
     'data': [
         'security/support_team.xml',
-        'views/crm.xml',
         'views/project_project.xml',
         'views/support_team.xml',
         'views/project_task.xml',
