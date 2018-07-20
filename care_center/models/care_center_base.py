@@ -6,7 +6,7 @@ class CareCenterBase(models.AbstractModel):
     Base model including helper functions / fields
     useful in multiple other project models.
     """
-    _name = 'care_center.base'
+    _name = "care_center.base"
 
     @api.multi
     def get_partner_ids(self, field=None):
@@ -18,15 +18,16 @@ class CareCenterBase(models.AbstractModel):
         """
         if field is None:
             field = self.partner_id
-        if field.parent_id:
-            parent = field.parent_id
-        else:
-            parent = field
-
-        partner_ids = parent.child_ids.mapped('id')
-        partner_ids.append(parent.id)
-
-        return partner_ids
+        partner_ids = [
+            field.commercial_partner_id.id
+        ] + field.commercial_partner_id.child_ids.ids
+        # Need to search by parent_id or else tickets from inactive
+        # partners will be skipped
+        return (
+            self.env["res.partner"]
+            .search([("parent_id", "in", partner_ids)])
+            .ids
+        )
 
     @api.multi
     def get_partner_domain(self, partner_ids=()):
@@ -34,7 +35,7 @@ class CareCenterBase(models.AbstractModel):
             partner_ids = self.get_partner_ids()
 
         return [
-            '|',
-            ('partner_id', '=', False),
-            ('partner_id', 'in', partner_ids),
+            "|",
+            ("partner_id", "=", False),
+            ("partner_id", "in", partner_ids),
         ]
