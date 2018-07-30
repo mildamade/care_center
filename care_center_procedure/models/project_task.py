@@ -1,22 +1,25 @@
-# -*- coding: utf-8 -*-
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
 
 class ProjectTask(models.Model):
-    _inherit = 'project.task'
+    _inherit = "project.task"
 
-    procedure_ids = fields.One2many('procedure.assignment', 'task_id',
-                                    string='Procedures',
-                                    domain=[('procedure_id.parent_id', '=', False)],
-                                    )
+    procedure_ids = fields.One2many(
+        "procedure.assignment",
+        "task_id",
+        string="Procedures",
+        domain=[("procedure_id.parent_id", "=", False)],
+    )
 
-    checklist_ids = fields.One2many('procedure.assignment', 'task_id',
-                                    string='Checklist',
-                                    domain=[('procedure_id.parent_id', '!=', False)],
-                                    )
-    procedure_count = fields.Integer(compute='_procedure_count')
-    checklist_count = fields.Integer(compute='_checklist_count')
+    checklist_ids = fields.One2many(
+        "procedure.assignment",
+        "task_id",
+        string="Checklist",
+        domain=[("procedure_id.parent_id", "!=", False)],
+    )
+    procedure_count = fields.Integer(compute="_procedure_count")
+    checklist_count = fields.Integer(compute="_checklist_count")
 
     @api.multi
     def _procedure_count(self):
@@ -34,11 +37,9 @@ class ProjectTask(models.Model):
         if sequence == 1:
             sequence = len(self.procedure_ids) + 1
 
-        procedures = self.env['procedure.procedure'].search([
-            '|',
-            ('id', '=', procedure.id),
-            ('parent_id', '=', procedure.id),
-        ])
+        procedures = self.env["procedure.procedure"].search(
+            ["|", ("id", "=", procedure.id), ("parent_id", "=", procedure.id)]
+        )
 
         for proc in procedures:
             # Parent procedure sequence gets defined in wizard
@@ -48,23 +49,25 @@ class ProjectTask(models.Model):
             else:
                 sequence = proc.sequence
 
-            self.env['procedure.assignment'].create({
-                'parent_id': proc.parent_id and proc.parent_id.id,
-                'procedure_id': proc.id,
-                'sequence': sequence,
-                'task_id': self.id,
-            })
+            self.env["procedure.assignment"].create(
+                {
+                    "parent_id": proc.parent_id and proc.parent_id.id,
+                    "procedure_id": proc.id,
+                    "sequence": sequence,
+                    "task_id": self.id,
+                }
+            )
 
     @api.multi
     def confirm_checklists_done(self):
-        open_checklists = self.env['procedure.assignment'].search_count([
-            ('task_id', '=', self.id),
-            ('status', 'in', ['todo', 'waiting', 'working'])
-        ])
+        open_checklists = self.env["procedure.assignment"].search_count(
+            [
+                ("task_id", "=", self.id),
+                ("status", "in", ["todo", "waiting", "working"]),
+            ]
+        )
         if open_checklists:
-            raise ValidationError(
-                'Please close all open Checklists'
-            )
+            raise ValidationError("Please close all open Checklists")
 
     @api.multi
     def close_ticket(self):
